@@ -230,6 +230,7 @@
   .share-btn.line{background:#06C755;}
   .share-btn.copy{background:linear-gradient(135deg, var(--accent-2), #7C5CE0);}
   .share-btn.native{background:linear-gradient(135deg, var(--accent), var(--accent-deep));}
+  .share-btn.insta{background:linear-gradient(135deg, #FEDA75, #FA7E1E, #D62976, #962FBF, #4F5BD5);}
   .share-note{margin-top:10px; font-size:.7rem; color:var(--ink-soft);}
 
   .section-block{margin-top:36px;}
@@ -472,8 +473,12 @@
         <button class="share-btn copy" id="share-copy" type="button" title="リンクをコピー" aria-label="リンクをコピー">
           <svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="#fff" stroke-width="1.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>
         </button>
+        <button class="share-btn insta" id="share-insta" type="button" title="画像でシェア（Instagramストーリーズなど）" aria-label="画像でシェア">
+          <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="#fff" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1.1" fill="#fff"/></svg>
+        </button>
       </div>
       <p class="share-note" id="share-note">友達にも診断してもらお♪ このリンクはあなたの結果付きでシェアできます</p>
+      <p class="share-note">Instagramストーリーズには「画像でシェア」から結果画像を送れます</p>
     </div>
 
     <div class="section-block">
@@ -1010,6 +1015,156 @@
     el.innerHTML = '<span class="eye l"></span><span class="eye r"></span><span class="cheek l"></span><span class="cheek r"></span><span class="mouth"></span>';
   }
 
+  /* ================= SHARE CARD (canvas image for Instagram etc.) ================= */
+
+  function roundRectPath(ctx, x, y, w, h, r){
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.arcTo(x + w, y, x + w, y + h, r);
+    ctx.arcTo(x + w, y + h, x, y + h, r);
+    ctx.arcTo(x, y + h, x, y, r);
+    ctx.arcTo(x, y, x + w, y, r);
+    ctx.closePath();
+  }
+
+  function wrapCanvasText(ctx, text, x, y, maxWidth, lineHeight){
+    var chars = text.split("");
+    var line = "";
+    var lines = [];
+    chars.forEach(function(ch){
+      var test = line + ch;
+      if(ctx.measureText(test).width > maxWidth && line){
+        lines.push(line);
+        line = ch;
+      } else {
+        line = test;
+      }
+    });
+    if(line) lines.push(line);
+    lines.forEach(function(l, i){ ctx.fillText(l, x, y + i * lineHeight); });
+    return y + lines.length * lineHeight;
+  }
+
+  function loadImg(src){
+    return new Promise(function(resolve, reject){
+      var img = new Image();
+      img.onload = function(){ resolve(img); };
+      img.onerror = reject;
+      img.src = src;
+    });
+  }
+
+  function buildShareCard(data){
+    var W = 1080, H = 1920;
+    var canvas = document.createElement("canvas");
+    canvas.width = W; canvas.height = H;
+    var ctx = canvas.getContext("2d");
+
+    return loadImg(data.photoSrc).then(function(photoImg){
+      // background
+      var grad = ctx.createLinearGradient(0, 0, 0, H);
+      grad.addColorStop(0, "#FFF3F6");
+      grad.addColorStop(1, "#FDE7F0");
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, W, H);
+
+      ctx.globalAlpha = .5;
+      ctx.fillStyle = "#FFD9E4";
+      ctx.beginPath(); ctx.arc(120, 160, 260, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = "#EBE2FF";
+      ctx.beginPath(); ctx.arc(W-100, H-260, 300, 0, Math.PI*2); ctx.fill();
+      ctx.globalAlpha = 1;
+
+      // kicker
+      ctx.fillStyle = "#F0447A";
+      ctx.font = "600 30px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText("WOMEN'S HAIR DIAGNOSIS", W/2, 130);
+
+      // mascot circle
+      var mcx = W/2, mcy = 280, mr = 110;
+      ctx.fillStyle = data.mascotColor;
+      ctx.beginPath(); ctx.arc(mcx, mcy, mr, 0, Math.PI*2); ctx.fill();
+      ctx.fillStyle = "#3B2545";
+      ctx.beginPath(); ctx.arc(mcx-32, mcy+6, 8, 0, Math.PI*2); ctx.fill();
+      ctx.beginPath(); ctx.arc(mcx+32, mcy+6, 8, 0, Math.PI*2); ctx.fill();
+      ctx.strokeStyle = "#3B2545"; ctx.lineWidth = 6; ctx.lineCap = "round";
+      ctx.beginPath(); ctx.arc(mcx, mcy+18, 26, 0.15*Math.PI, 0.85*Math.PI); ctx.stroke();
+
+      // type name
+      ctx.fillStyle = "#3B2545";
+      ctx.font = "700 62px sans-serif";
+      ctx.textAlign = "center";
+      ctx.fillText(data.typeLine, W/2, 470);
+
+      ctx.fillStyle = "#8B7797";
+      ctx.font = "500 32px sans-serif";
+      ctx.fillText(data.mbtiNick, W/2, 525);
+
+      // photo frame
+      var pw = 760, ph = 760, px = (W-pw)/2, py = 590;
+      ctx.save();
+      roundRectPath(ctx, px, py, pw, ph, 48);
+      ctx.clip();
+      ctx.fillStyle = "#FFF0F6";
+      ctx.fillRect(px, py, pw, ph);
+      var iw = photoImg.width, ih = photoImg.height;
+      var scale = Math.max(pw/iw, ph/ih);
+      var dw = iw*scale, dh = ih*scale;
+      ctx.drawImage(photoImg, px + (pw-dw)/2, py + (ph-dh)/2, dw, dh);
+      ctx.restore();
+
+      // color chip
+      var chipY = py + ph + 70;
+      ctx.fillStyle = data.colorHex;
+      roundRectPath(ctx, W/2 - 220, chipY, 70, 70, 18);
+      ctx.fill();
+      ctx.textAlign = "left";
+      ctx.fillStyle = "#3B2545";
+      ctx.font = "700 40px sans-serif";
+      ctx.fillText(data.colorName, W/2 - 130, chipY + 32);
+      ctx.fillStyle = "#B08A5A";
+      ctx.font = "600 28px sans-serif";
+      ctx.fillText(data.colorTone, W/2 - 130, chipY + 68);
+
+      // footer CTA
+      ctx.textAlign = "center";
+      ctx.fillStyle = "#3B2545";
+      ctx.font = "700 40px sans-serif";
+      ctx.fillText("あなたのタイプは？", W/2, H - 170);
+      ctx.fillStyle = "#F0447A";
+      ctx.font = "600 32px sans-serif";
+      ctx.fillText(data.siteLabel, W/2, H - 110);
+
+      return new Promise(function(resolve){
+        canvas.toBlob(function(blob){ resolve(blob); }, "image/png");
+      });
+    });
+  }
+
+  function shareResultImage(cardData, noteEl){
+    var orig = noteEl.textContent;
+    noteEl.textContent = "画像を作成中…";
+    buildShareCard(cardData).then(function(blob){
+      var file = new File([blob], "my-hair-type.png", {type:"image/png"});
+      if(navigator.canShare && navigator.canShare({files:[file]})){
+        return navigator.share({files:[file], title:"似合う髪型診断", text:cardData.shareText}).then(function(){
+          noteEl.textContent = orig;
+        });
+      }
+      var url = URL.createObjectURL(blob);
+      var a = document.createElement("a");
+      a.href = url; a.download = "my-hair-type.png";
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(function(){ URL.revokeObjectURL(url); }, 4000);
+      noteEl.textContent = "画像を保存しました！Instagramなどのアプリから投稿してね";
+      setTimeout(function(){ noteEl.textContent = orig; }, 3500);
+    }).catch(function(){
+      noteEl.textContent = "画像の作成に失敗しました。もう一度お試しください";
+      setTimeout(function(){ noteEl.textContent = orig; }, 3000);
+    });
+  }
+
   /* ================= RESULT RENDER ================= */
 
   function el(id){ return document.getElementById(id); }
@@ -1046,6 +1201,19 @@
       else { doCopyLink(); }
     };
     el("share-copy").onclick = doCopyLink;
+    el("share-insta").onclick = function(){
+      shareResultImage({
+        photoSrc: HAIR_PHOTOS[skeletonType + "_" + colorType],
+        mascotColor: mascotColor,
+        typeLine: skShort + " × " + mbtiCode + " × " + coShort,
+        mbtiNick: mbtiCode + "｜" + mb.nick,
+        colorHex: coStyle.hex,
+        colorName: coStyle.name,
+        colorTone: coStyle.tone,
+        siteLabel: location.host || "似合う髪型診断",
+        shareText: shareText
+      }, el("share-note"));
+    };
     function doCopyLink(){
       var note = el("share-note");
       var orig = note.textContent;
