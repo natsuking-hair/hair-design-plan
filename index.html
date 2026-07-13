@@ -247,6 +247,7 @@
     display:flex; gap:16px; align-items:flex-start;
   }
   .detail-icon{flex:none; width:52px; height:52px;}
+  .skeleton-photo{flex:none; width:96px; height:96px; border-radius:20px; object-fit:cover; box-shadow:var(--shadow);}
   .detail-card h3{font-size:1.02rem; font-family:var(--font-display); margin-bottom:6px;}
   .detail-card .lead{font-size:.68rem; letter-spacing:.08em; color:var(--gold); font-weight:700; text-transform:uppercase; margin-bottom:4px;}
   .detail-card p{font-size:.88rem; color:var(--ink-soft);}
@@ -478,7 +479,7 @@
     <div class="section-block">
       <div class="section-title"><span class="num">1</span><h2>骨格タイプ</h2></div>
       <div class="detail-card">
-        <svg class="detail-icon" id="skeleton-icon" viewBox="0 0 64 64"></svg>
+        <img class="skeleton-photo" id="skeleton-icon" alt="骨格タイプのイメージイラスト">
         <div>
           <div class="lead">SKELETON TYPE</div>
           <h3 id="skeleton-name">-</h3>
@@ -976,19 +977,6 @@
 
   function svgSet(el, inner){ el.innerHTML = inner; }
 
-  function hairIconSvg(type, color){
-    if(type === "S"){
-      return '<circle cx="32" cy="30" r="14" fill="' + color + '" opacity=".25"/>' +
-        '<path d="M18 30 C18 16 46 16 46 30 L46 42 C46 44 44 46 41 46 L23 46 C20 46 18 44 18 42 Z" fill="' + color + '"/>' +
-        '<rect x="24" y="40" width="16" height="16" rx="8" fill="' + color + '" opacity=".2"/>';
-    }
-    if(type === "W"){
-      return '<circle cx="32" cy="28" r="13" fill="' + color + '" opacity=".25"/>' +
-        '<path d="M17 28 C17 14 47 14 47 28 C50 34 44 34 45 42 C41 36 39 42 35 38 C33 44 29 38 27 42 C25 36 21 38 19 42 C18 34 14 34 17 28 Z" fill="' + color + '"/>';
-    }
-    return '<circle cx="32" cy="28" r="13" fill="' + color + '" opacity=".25"/>' +
-      '<path d="M17 30 C15 18 24 12 32 14 C40 12 49 18 47 30 C49 34 45 38 47 44 C42 40 43 46 38 42 C37 46 33 44 32 40 C31 44 27 46 26 42 C21 46 22 40 17 44 C19 38 15 34 17 30 Z" fill="' + color + '"/>';
-  }
 
   function seasonIconSvg(type, color){
     if(type === "spring"){
@@ -1046,7 +1034,7 @@
     var shareText = "私は「" + skShort + "×" + mbtiCode + "×" + coShort + "」タイプでした。あなたのタイプは？";
     var shareUrl = location.href;
     el("share-x").href = "https://twitter.com/intent/tweet?text=" + encodeURIComponent(shareText) + "&url=" + encodeURIComponent(shareUrl);
-    el("share-line").href = "https://social-plugins.line.me/lineit/share?url=" + encodeURIComponent(shareUrl) + "&text=" + encodeURIComponent(shareText);
+    el("share-line").href = "https://line.me/R/msg/text/?" + encodeURIComponent(shareText + " " + shareUrl);
     el("share-native").onclick = function(){
       if(navigator.share){ navigator.share({title:"似合う髪型診断", text:shareText, url:shareUrl}).catch(function(){}); }
       else { doCopyLink(); }
@@ -1064,7 +1052,7 @@
     el("skeleton-name").textContent = sk.name;
     el("skeleton-desc").textContent = sk.desc;
     el("skeleton-avoid").textContent = "注意：" + sk.avoid;
-    svgSet(el("skeleton-icon"), hairIconSvg(skeletonType, "var(--accent-deep)"));
+    el("skeleton-icon").src = HAIR_PHOTOS[skeletonType + "_autumn"];
 
     var confBox = el("skeleton-confidence-box");
     if(skeletonMeta){
