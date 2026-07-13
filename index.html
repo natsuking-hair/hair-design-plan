@@ -374,7 +374,7 @@
       </svg>
 
       <h1 class="top-title">骨格×性格×カラーで<br>見つける、<br><em>本気で似合う</em>髪型&髪色</h1>
-      <p class="top-sub">女性のための骨格タイプ・性格の4つの軸・パーソナルカラーをかけ合わせて、あなた専用のヘアスタイルを診断するよ。全26問に答えるだけ！美容師さんにそのまま見せられるオーダーシートつき。</p>
+      <p class="top-sub">女性のための骨格タイプ・性格の4つの軸・パーソナルカラーをかけ合わせて、あなた専用のヘアスタイルを診断するよ。全30問に答えるだけ！美容師さんにそのまま見せられるオーダーシートつき。</p>
 
       <div class="axis-row">
         <div class="axis-card">
@@ -390,7 +390,7 @@
             <rect x="19" y="19" width="11" height="11" rx="4" fill="#fff"/>
           </svg>
           <div class="name">性格タイプ</div>
-          <div class="sub">4軸 簡易MBTI<br>全12問</div>
+          <div class="sub">4軸 簡易MBTI<br>全16問</div>
         </div>
         <div class="axis-card">
           <svg class="icon" viewBox="0 0 34 34" fill="none">
@@ -409,7 +409,7 @@
           さっそく診断してみる
           <svg viewBox="0 0 16 16" fill="none"><path d="M3 8h10M9 4l4 4-4 4" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
         </button>
-        <p class="cta-note">女性向け・全26問・所要時間 約3分</p>
+        <p class="cta-note">女性向け・全30問・所要時間 約3分</p>
       </div>
 
       <div class="top-footer">
@@ -424,7 +424,7 @@
     <div class="quiz-head">
       <div class="quiz-stage-row">
         <span class="stage-pill" id="stage-pill">STEP 1 · 骨格診断</span>
-        <span class="stage-count" id="stage-count">1 / 26</span>
+        <span class="stage-count" id="stage-count">1 / 30</span>
       </div>
       <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
       <div class="stage-labels">
@@ -683,18 +683,102 @@
   ];
 
   var MBTI_Q = [
-    {text:"初対面の人が多い場では？", axis:"EI", opts:[{label:"自分から話しかけて場を盛り上げる", val:"E"},{label:"自然に会話が始まるのを待つことが多い", val:"I"}]},
-    {text:"休日の過ごし方で近いのは？", axis:"EI", opts:[{label:"友達と予定を詰め込んでアクティブに", val:"E"},{label:"一人や少人数で、ゆったりと", val:"I"}]},
-    {text:"エネルギーが回復するのは？", axis:"EI", opts:[{label:"誰かと話している時間", val:"E"},{label:"一人で過ごす時間", val:"I"}]},
-    {text:"物事を考えるときに重視するのは？", axis:"SN", opts:[{label:"実際の経験や具体的な事実", val:"S"},{label:"直感やひらめき、可能性", val:"N"}]},
-    {text:"好きな会話のタイプは？", axis:"SN", opts:[{label:"実用的で現実的な話", val:"S"},{label:"未来や可能性についての話", val:"N"}]},
-    {text:"新しいことに挑戦するときは？", axis:"SN", opts:[{label:"実例や実績を確認してから", val:"S"},{label:"とりあえずやってみたい", val:"N"}]},
-    {text:"決断するときに大事にするのは？", axis:"TF", opts:[{label:"論理的に筋が通っているか", val:"T"},{label:"自分や相手の気持ちにどう響くか", val:"F"}]},
-    {text:"友達に相談されたら？", axis:"TF", opts:[{label:"解決策を一緒に考える", val:"T"},{label:"まず気持ちに共感する", val:"F"}]},
-    {text:"褒められて嬉しいのは？", axis:"TF", opts:[{label:"「有能だね」と言われること", val:"T"},{label:"「一緒にいると安心する」と言われること", val:"F"}]},
-    {text:"予定については、どちらがしっくりくる？", axis:"JP", opts:[{label:"事前にきっちり計画を立てたい", val:"J"},{label:"その場の流れで自由に決めたい", val:"P"}]},
-    {text:"部屋や持ち物は？", axis:"JP", opts:[{label:"整理整頓されている方", val:"J"},{label:"多少散らかっていても気にしない", val:"P"}]},
-    {text:"締め切りに対しては？", axis:"JP", opts:[{label:"早めに終わらせたい", val:"J"},{label:"追い込まれてから動くタイプ", val:"P"}]}
+    {text:"初対面の人が多い場では？", axis:"EI", opts:[
+      {label:"自分からどんどん話しかけて場を回す", val:"E", w:2},
+      {label:"話しかけられれば普通に会話できる", val:"E", w:1},
+      {label:"必要なとき以外はあまり話さない", val:"I", w:1},
+      {label:"できるだけ静かに過ごしたい", val:"I", w:2}
+    ]},
+    {text:"休日の過ごし方で近いのは？", axis:"EI", opts:[
+      {label:"予定を詰め込んで色んな人と会いたい", val:"E", w:2},
+      {label:"たまに誰かと出かけるのも好き", val:"E", w:1},
+      {label:"気の合う人と少人数でゆっくり", val:"I", w:1},
+      {label:"誰とも会わず一人で過ごしたい", val:"I", w:2}
+    ]},
+    {text:"エネルギーが回復するのは？", axis:"EI", opts:[
+      {label:"誰かとたくさん話した後", val:"E", w:2},
+      {label:"人と話すのはわりと好き", val:"E", w:1},
+      {label:"一人の時間があれば十分", val:"I", w:1},
+      {label:"がっつり一人の時間が必要", val:"I", w:2}
+    ]},
+    {text:"グループで作業するとき？", axis:"EI", opts:[
+      {label:"積極的に発言してリードしたい", val:"E", w:2},
+      {label:"聞かれれば意見を言う", val:"E", w:1},
+      {label:"求められたときだけ発言する", val:"I", w:1},
+      {label:"できれば個人作業がいい", val:"I", w:2}
+    ]},
+    {text:"物事を考えるときに重視するのは？", axis:"SN", opts:[
+      {label:"具体的な事実やデータ", val:"S", w:2},
+      {label:"経験に基づいた実感", val:"S", w:1},
+      {label:"ひらめきや可能性", val:"N", w:1},
+      {label:"抽象的なアイデアそのもの", val:"N", w:2}
+    ]},
+    {text:"好きな会話のタイプは？", axis:"SN", opts:[
+      {label:"実用的で現実的な話", val:"S", w:2},
+      {label:"身近な出来事の話", val:"S", w:1},
+      {label:"未来や可能性についての話", val:"N", w:1},
+      {label:"抽象的で壮大なテーマの話", val:"N", w:2}
+    ]},
+    {text:"新しいことに挑戦するときは？", axis:"SN", opts:[
+      {label:"実例や実績をしっかり確認してから", val:"S", w:2},
+      {label:"ある程度確かめてから動きたい", val:"S", w:1},
+      {label:"だいたい分かればやってみたい", val:"N", w:1},
+      {label:"直感でとりあえずやってみたい", val:"N", w:2}
+    ]},
+    {text:"説明を聞くとき、しっくりくるのは？", axis:"SN", opts:[
+      {label:"具体例や手順を順序立てて", val:"S", w:2},
+      {label:"ある程度具体的な説明が欲しい", val:"S", w:1},
+      {label:"全体像やイメージが伝わればいい", val:"N", w:1},
+      {label:"コンセプトや可能性を語ってほしい", val:"N", w:2}
+    ]},
+    {text:"決断するときに大事にするのは？", axis:"TF", opts:[
+      {label:"論理的に筋が通っているか", val:"T", w:2},
+      {label:"客観的に見て妥当か", val:"T", w:1},
+      {label:"自分や相手の気持ちにどう響くか", val:"F", w:1},
+      {label:"人間関係への影響", val:"F", w:2}
+    ]},
+    {text:"友達に相談されたら？", axis:"TF", opts:[
+      {label:"客観的な解決策を提示する", val:"T", w:2},
+      {label:"一緒に考えて整理する", val:"T", w:1},
+      {label:"まず気持ちに共感する", val:"F", w:1},
+      {label:"とにかく寄り添って話を聞く", val:"F", w:2}
+    ]},
+    {text:"褒められて嬉しいのは？", axis:"TF", opts:[
+      {label:"「有能だね」「正確だね」", val:"T", w:2},
+      {label:"「よく考えてるね」", val:"T", w:1},
+      {label:"「一緒にいると安心する」", val:"F", w:1},
+      {label:"「優しいね」「思いやりあるね」", val:"F", w:2}
+    ]},
+    {text:"意見が対立したとき？", axis:"TF", opts:[
+      {label:"正しさや論理を優先したい", val:"T", w:2},
+      {label:"どちらが妥当か考えたい", val:"T", w:1},
+      {label:"その場の空気や関係を大事にしたい", val:"F", w:1},
+      {label:"対立そのものを避けたい", val:"F", w:2}
+    ]},
+    {text:"予定については？", axis:"JP", opts:[
+      {label:"きっちり計画を立てないと落ち着かない", val:"J", w:2},
+      {label:"ある程度は決めておきたい", val:"J", w:1},
+      {label:"大まかに決まっていれば十分", val:"P", w:1},
+      {label:"その場の流れで自由に決めたい", val:"P", w:2}
+    ]},
+    {text:"部屋や持ち物は？", axis:"JP", opts:[
+      {label:"常にきっちり整理整頓", val:"J", w:2},
+      {label:"だいたい片付いている方", val:"J", w:1},
+      {label:"多少散らかっても気にしない", val:"P", w:1},
+      {label:"かなり自由に散らかっている", val:"P", w:2}
+    ]},
+    {text:"締め切りに対しては？", axis:"JP", opts:[
+      {label:"かなり早めに終わらせたい", val:"J", w:2},
+      {label:"余裕を持って終わらせたい", val:"J", w:1},
+      {label:"ギリギリになりがち", val:"P", w:1},
+      {label:"追い込まれてから一気に動く", val:"P", w:2}
+    ]},
+    {text:"旅行に行くなら？", axis:"JP", opts:[
+      {label:"分刻みでプランを立てたい", val:"J", w:2},
+      {label:"ざっくりプランを立てたい", val:"J", w:1},
+      {label:"現地の気分で決めたい", val:"P", w:1},
+      {label:"ノープランで行きたい", val:"P", w:2}
+    ]}
   ];
 
   var STAGES = [
@@ -713,15 +797,30 @@
   };
 
   var SKELETON_STYLE = {
-    S:{title:"小顔見せストレートショート〜ミディアム", length:"ショート〜ミディアム",
-       desc:"直線的なラインと適度な重みで、鎖骨や首まわりをすっきり見せるスタイルが得意です。",
-       points:["顔まわりは重めの直線ラインでIラインを強調","毛先はワンレングス寄りにまとめて上質感を演出","前髪はやや長めにして、顔幅を隠しすぎない"]},
-    W:{title:"ゆるふわレイヤーミディアム〜セミロング", length:"セミロング〜ロング",
-       desc:"曲線的でふんわり軽やかなシルエットが得意。トップは潰さず丸みを出すのがポイントです。",
-       points:["緩めのCカール・ウェーブパーマで柔らかさをプラス","毛先を軽くレイヤーですくと下重心バランスと好相性","短くする場合も、鎖骨にかかる長さをキープ"]},
-    N:{title:"無造作ウルフ・シャギーレイヤー", length:"ショート〜ロングまで対応◎",
-       desc:"骨格のフレーム感を活かし、質感とボリュームで遊べるのが強み。かっちりまとめすぎない方が似合います。",
-       points:["毛束感の出るシャギー・ウルフカットで抜け感UP","トップやサイドにレイヤーを効かせてラフに動きを出す","ストレートパーマより無造作な質感パーマが◎"]}
+    S:{
+      P:{title:"小顔ストレートボブ", length:"ショート",
+         desc:"直線的なラインで鎖骨まわりをすっきり見せる、乾かすだけでキマる時短ボブです。",
+         points:["顔まわりは重めの直線ラインでIラインを強調","毛先はワンレングス寄りにまとめて上質感を演出","ブロー1回で再現できる長さ感がポイント"]},
+      J:{title:"艶ストレートミディアム", length:"ミディアム",
+         desc:"直線的なラインと適度な重みで、鎖骨や首まわりをすっきり見せる王道スタイルです。",
+         points:["毛先を揃えたワンレングスで上質感を演出","巻いてもストレートでも様になる万能な長さ","前髪はやや長めにして、顔幅を隠しすぎない"]}
+    },
+    W:{
+      P:{title:"ゆるっとショートウェーブ", length:"ショート〜ミディアム",
+         desc:"曲線的な軽やかさを活かしつつ、乾かすだけで自然にまとまる時短ウェーブです。",
+         points:["緩めのCカールパーマで柔らかさをプラス","毛先を軽くレイヤーですくと下重心バランスと好相性","乾かすだけで丸みが出るカットライン"]},
+      J:{title:"エアリーロングウェーブ", length:"セミロング〜ロング",
+         desc:"曲線的でふんわり軽やかなシルエットが得意。巻き方次第で表情を変えられる万能ロングです。",
+         points:["緩めのCカール・ウェーブパーマで柔らかさをプラス","毛先を軽くレイヤーですくと下重心バランスと好相性","鎖骨より長い長さをキープすると上品に"]}
+    },
+    N:{
+      P:{title:"無造作マッシュウルフ", length:"ショート",
+         desc:"骨格のフレーム感を活かした、ドライヤーひと吹きで様になる時短ショートです。",
+         points:["毛束感の出るシャギーカットで抜け感UP","トップにレイヤーを効かせてラフに動きを出す","乾かすだけでキマる計算されたカットライン"]},
+      J:{title:"レイヤーウルフロング", length:"ミディアム〜ロング",
+         desc:"骨格のフレーム感を活かし、質感とボリュームで遊べるのが強み。巻いても伸ばしても様になります。",
+         points:["毛束感の出るシャギー・ウルフカットで抜け感UP","トップやサイドにレイヤーを効かせてラフに動きを出す","ストレートパーマより無造作な質感パーマが◎"]}
+    }
   };
 
   var COLOR_INFO = {
@@ -732,10 +831,22 @@
   };
 
   var COLOR_STYLE = {
-    spring:{name:"シアーオレンジベージュ", hex:"#E8B48A", tone:"8〜10トーン", desc:"黄みのある明るい暖色で、肌に透明感と血色をプラスします。", avoid:"黒髪や暗すぎるアッシュ系は、顔色がくすんで見えることも。"},
-    summer:{name:"ラベンダーミルクティーグレージュ", hex:"#C9B7C9", tone:"7〜9トーン", desc:"青みのある柔らかい色で、肌のくすみを飛ばし抜け感を演出します。", avoid:"オレンジやゴールド系の暖色は、顔が黄ぐすみして見えやすいので注意。"},
-    autumn:{name:"キャラメルショコラブラウン", hex:"#8A5A34", tone:"5〜7トーン", desc:"深みのある黄みブラウンで、肌になじみながら大人っぽい艶を演出します。", avoid:"青みの強い寒色や真っ黒は、肌がくすんで見えやすいことも。"},
-    winter:{name:"ダークグレージュ〜ブルーブラック", hex:"#3A3238", tone:"3〜5トーン", desc:"コントラストの効いた寒色系で、色白効果とシャープな印象を演出します。", avoid:"オレンジ系や黄みの強いブラウンは、顔がぼやけた印象になりがち。"}
+    spring:{
+      S:{name:"シアーオレンジベージュ", hex:"#E8B48A", tone:"8〜10トーン", desc:"黄みのある明るい暖色の定番カラー。肌に透明感と血色をプラスします。", avoid:"黒髪や暗すぎるアッシュ系は、顔色がくすんで見えることも。"},
+      N:{name:"ハニーブラウンバレイヤージュ", hex:"#D99B5F", tone:"9〜11トーン", desc:"毛先にかけて明るさを効かせたバレイヤージュ。トレンド感のある抜け感を演出します。", avoid:"単色でベタっと塗ると重く見えるので、グラデーション技術が前提です。"}
+    },
+    summer:{
+      S:{name:"ラベンダーミルクティーグレージュ", hex:"#C9B7C9", tone:"7〜9トーン", desc:"青みのある柔らかい定番カラー。肌のくすみを飛ばし抜け感を演出します。", avoid:"オレンジやゴールド系の暖色は、顔が黄ぐすみして見えやすいので注意。"},
+      N:{name:"スモーキーラベンダーグラデーション", hex:"#B39FC0", tone:"8〜10トーン", desc:"根元から毛先にかけてスモーキーに抜けるグラデーション。透明感と今っぽさを両立します。", avoid:"根元との差が大きすぎると伸びかけが目立ちやすいので定期メンテ推奨。"}
+    },
+    autumn:{
+      S:{name:"キャラメルショコラブラウン", hex:"#8A5A34", tone:"5〜7トーン", desc:"深みのある黄みブラウンの定番カラー。肌になじみながら大人っぽい艶を演出します。", avoid:"青みの強い寒色や真っ黒は、肌がくすんで見えやすいことも。"},
+      N:{name:"テラコッタブラウンバレイヤージュ", hex:"#A8623F", tone:"7〜9トーン", desc:"テラコッタ系の温かみと立体的なバレイヤージュで、トレンド感と抜け感を両立します。", avoid:"ブリーチ量が多くなりがちなので、ダメージケアとセットで検討を。"}
+    },
+    winter:{
+      S:{name:"ダークグレージュ〜ブルーブラック", hex:"#3A3238", tone:"3〜5トーン", desc:"コントラストの効いた寒色系の定番カラー。色白効果とシャープな印象を演出します。", avoid:"オレンジ系や黄みの強いブラウンは、顔がぼやけた印象になりがち。"},
+      N:{name:"インクブラックグラデーション", hex:"#2B2A3D", tone:"4〜6トーン", desc:"根元は締め色、毛先にかけてわずかに青みを効かせたグラデーション。透明感のある奥行きを演出します。", avoid:"黒に寄せすぎるとのっぺり見えるので、毛先の質感出しが鍵です。"}
+    }
   };
 
   var HAIR_PHOTOS = {
@@ -904,17 +1015,17 @@
     order.forEach(function(k){ var s = count[k] || 0; if(s > bestScore){ bestScore = s; best = k; } });
     return best;
   }
-  function axisPercent(vals, letters){
-    var c = tally(vals);
-    var total = vals.length || 1;
-    var aPct = Math.round((c[letters[0]] || 0) / total * 100);
-    return {a:letters[0], aPct:aPct, b:letters[1], bPct:100 - aPct};
-  }
-
   function weightedTally(pairs){
     var count = {};
     pairs.forEach(function(p){ if(!p.val) return; count[p.val] = (count[p.val] || 0) + p.weight; });
     return count;
+  }
+
+  function axisPercent(pairs, letters){
+    var c = weightedTally(pairs);
+    var total = (c[letters[0]] || 0) + (c[letters[1]] || 0);
+    var aPct = total ? Math.round((c[letters[0]] || 0) / total * 100) : 50;
+    return {a:letters[0], aPct:aPct, b:letters[1], bPct:100 - aPct};
   }
 
   function computeSkeleton(pairs){
@@ -957,7 +1068,7 @@
     var baseVals = [], brightVals = [];
     byStage.color.forEach(function(r){ if(!r.chosen) return; if(r.q.axis === "base") baseVals.push(r.chosen.val); else brightVals.push(r.chosen.val); });
     var axisVals = {EI:[], SN:[], TF:[], JP:[]};
-    byStage.mbti.forEach(function(r){ if(!r.chosen) return; axisVals[r.q.axis].push(r.chosen.val); });
+    byStage.mbti.forEach(function(r){ if(!r.chosen) return; axisVals[r.q.axis].push({val:r.chosen.val, weight:r.chosen.w || 1}); });
 
     var res = computeFromAnswerMap(skeletonPairs, baseVals, brightVals, axisVals);
     renderResult(res.skeletonType, res.mbtiCode, res.colorType, res.percents, {mixType:res.skeletonMix, confidence:res.skeletonConfidence});
@@ -1171,10 +1282,10 @@
 
   function renderResult(skeletonType, mbtiCode, colorType, percents, skeletonMeta){
     var sk = SKELETON_INFO[skeletonType];
-    var skStyle = SKELETON_STYLE[skeletonType];
+    var skStyle = SKELETON_STYLE[skeletonType][mbtiCode[3]];
     var mb = MBTI_INFO[mbtiCode];
     var co = COLOR_INFO[colorType];
-    var coStyle = COLOR_STYLE[colorType];
+    var coStyle = COLOR_STYLE[colorType][mbtiCode[1]];
     var mascotColor = mascotColorFor(mbtiCode);
 
     paintMascot(el("mascot-big"), mascotColor);
@@ -1234,7 +1345,7 @@
       var confText = "鎖骨・デコルテなど、特に見分けやすい部位を重視して診断した結果、" + skeletonMeta.confidence + "%の確信度で" + sk.name + "と判定しました。";
       if(skeletonMeta.mixType){
         var mixInfo = SKELETON_INFO[skeletonMeta.mixType];
-        var mixStyle = SKELETON_STYLE[skeletonMeta.mixType];
+        var mixStyle = SKELETON_STYLE[skeletonMeta.mixType][mbtiCode[3]];
         confText += "ただし" + mixInfo.name + "の要素も感じられる、ミックスタイプ寄りの診断です。「" + mixStyle.points[0] + "」も気分次第で取り入れてみると新しい発見があるかも。";
       }
       el("skeleton-confidence-text").textContent = confText;
