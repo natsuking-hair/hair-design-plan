@@ -318,6 +318,11 @@
   .honne-card{
     background:var(--surface); border-radius:24px; padding:22px; box-shadow:var(--shadow);
   }
+  .salon-card{
+    background:linear-gradient(165deg, var(--accent-2-soft), var(--surface));
+    border-radius:24px; padding:22px; box-shadow:var(--shadow);
+  }
+  .salon-card .style-name{margin-top:6px;}
   .honne-row{ display:flex; gap:14px; padding:12px 0; border-bottom:2px dashed var(--line); }
   .honne-row:last-child{border-bottom:none;}
   .honne-badge{
@@ -571,7 +576,19 @@
     </div>
 
     <div class="section-block">
-      <div class="section-title"><span class="num">7</span><h2>オーダーシート</h2></div>
+      <div class="section-title"><span class="num">7</span><h2>あなたに向いている美容室</h2></div>
+      <div class="salon-card">
+        <span class="option-label-tag" id="salon-tagline">-</span>
+        <div class="style-name pop" id="salon-title">-</div>
+        <p id="salon-desc" style="color:var(--ink-soft); font-size:.9rem;">-</p>
+        <div class="keyword-row" id="salon-tags"></div>
+        <div class="compat-box"><b>オーダー時のコツ①</b><span id="salon-tip1">-</span></div>
+        <div class="compat-box"><b>オーダー時のコツ②</b><span id="salon-tip2">-</span></div>
+      </div>
+    </div>
+
+    <div class="section-block">
+      <div class="section-title"><span class="num">8</span><h2>オーダーシート</h2></div>
       <div class="order-sheet">
         <div class="order-head">
           <div>
@@ -988,6 +1005,30 @@
     TP:"説明は手短でOK、セットに時間がかからない仕上がりが理想です。",
     FJ:"仕上がりイメージを共有しながら、丁寧に相談したいです。",
     FP:"その場の雰囲気に合わせて、直感でおまかせしたいです。"
+  };
+
+  var SALON_ARCHETYPE = {
+    EJ:{tagline:"予約の取りやすい人気サロン派", title:"指名の取りやすい人気サロン・有名スタイリスト",
+        desc:"話題性があり指名のしやすい人気店との相性◎。トレンドを押さえた提案力のあるスタイリストに、テキパキお願いするのが向いています。",
+        tags:["人気サロン","指名制","高い技術力"]},
+    EP:{tagline:"トレンド発信サロン派", title:"SNSで話題のトレンド発信サロン",
+        desc:"InstagramやTikTokで話題の最新スタイルを提案してくれる、遊び心のあるサロンと好相性。新しい美容室を開拓するのも楽しめるタイプです。",
+        tags:["トレンド発信","フリースタイル","新規開拓向き"]},
+    IJ:{tagline:"馴染みサロン派", title:"同じ担当者に長く任せられる、地域密着の馴染みサロン",
+        desc:"毎回同じスタイリストが担当してくれる、地域密着型のサロンと好相性。過去の要望を覚えていてくれる安心感が魅力です。",
+        tags:["地域密着","担当制","長期的な信頼関係"]},
+    IP:{tagline:"プライベートサロン派", title:"完全個室・プライベート空間のあるサロン",
+        desc:"他のお客さんの目が気にならない、個室や半個室のあるサロンと好相性。会話が少なめでも心地よく過ごせる空間が向いています。",
+        tags:["個室あり","マンツーマン接客","静かな雰囲気"]}
+  };
+
+  var SALON_TIP_TF = {
+    T:"要望は箇条書きで簡潔に伝えると、話がスムーズに進みます。",
+    F:"「なんとなくこんな気分」もそのまま伝えてOK。汲み取ってくれるサロンが◎。"
+  };
+  var SALON_TIP_SN = {
+    S:"過去の写真や「〇〇さんみたいな」という具体例を見せると伝わりやすいです。",
+    N:"ざっくりしたイメージや雰囲気ワードでも、汲み取って提案してくれるサロンが向いています。"
   };
 
   /* ================= STATE ================= */
@@ -1519,6 +1560,18 @@
         '<div class="honne-text"><b>' + AXIS_LABEL[L] + 'なあなたへ</b>' + AXIS_MOD[L] + '</div>';
       honne.appendChild(row);
     });
+
+    var salonKey = mbtiCode[0] + mbtiCode[3];
+    var salon = SALON_ARCHETYPE[salonKey];
+    el("salon-tagline").textContent = salon.tagline;
+    el("salon-title").textContent = salon.title;
+    el("salon-desc").textContent = salon.desc;
+    var salonTagWrap = el("salon-tags"); salonTagWrap.innerHTML = "";
+    salon.tags.forEach(function(t){
+      var s = document.createElement("span"); s.className = "keyword"; s.textContent = "#" + t; salonTagWrap.appendChild(s);
+    });
+    el("salon-tip1").textContent = SALON_TIP_TF[mbtiCode[2]];
+    el("salon-tip2").textContent = SALON_TIP_SN[mbtiCode[1]];
 
     el("order-type").textContent = skShort + " / " + mbtiCode + " / " + coShort;
     el("order-cut").textContent = skStyle.title;
