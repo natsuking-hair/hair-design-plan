@@ -215,6 +215,17 @@
     padding:6px 13px; border-radius:999px;
   }
 
+  .history-banner{
+    margin-top:22px; background:var(--accent-2-soft); border-radius:18px; padding:14px 18px;
+    display:flex; align-items:center; gap:12px;
+  }
+  .history-badge{
+    flex:none; font-family:var(--font-display); font-weight:600; font-size:.72rem; color:#fff;
+    background:linear-gradient(135deg, var(--accent-2), #7C5CE0); padding:6px 12px; border-radius:999px;
+    white-space:nowrap;
+  }
+  .history-banner p{margin:0; font-size:.82rem; color:var(--ink); line-height:1.5;}
+
   .share-block{
     margin-top:26px; background:var(--surface-tint); border-radius:24px; padding:18px 20px;
     text-align:center;
@@ -314,6 +325,20 @@
     font-size:.82rem; color:var(--ink); line-height:1.6;
   }
   .compat-box b{color:var(--accent-deep); font-family:var(--font-display); font-weight:600; font-size:.78rem; display:block; margin-bottom:2px;}
+
+  .search-row{
+    margin-top:14px; display:flex; align-items:center; gap:8px;
+    background:var(--surface-tint); border-radius:999px; padding:8px 8px 8px 16px;
+  }
+  .search-kw-text{flex:1; font-size:.78rem; color:var(--ink-soft); overflow:hidden; text-overflow:ellipsis; white-space:nowrap;}
+  .kw-btn{
+    flex:none; width:32px; height:32px; border-radius:50%; border:none; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center; text-decoration:none;
+  }
+  .kw-btn svg{width:15px;height:15px;}
+  .kw-btn.insta-btn{background:linear-gradient(135deg, #FEDA75, #FA7E1E, #D62976, #962FBF, #4F5BD5);}
+  .kw-btn.copy-kw-btn{background:linear-gradient(135deg, var(--accent-2), #7C5CE0);}
+  .kw-btn.copy-kw-btn.copied{background:linear-gradient(135deg, #34D6BE, #17A98D);}
 
   .honne-card{
     background:var(--surface); border-radius:24px; padding:22px; box-shadow:var(--shadow);
@@ -482,6 +507,11 @@
       <div class="mascot mascot-big" id="mascot-big"></div>
       <h1 class="result-type" id="result-type">-</h1>
       <div class="type-chip-row" id="type-chip-row"></div>
+    </div>
+
+    <div class="history-banner" id="history-banner" style="display:none;">
+      <span class="history-badge" id="history-count">-</span>
+      <p id="history-text">-</p>
     </div>
 
     <div class="share-block">
@@ -821,43 +851,61 @@
       {key:"teiban", label:"定番", title:"小顔ストレートボブ", length:"ショート",
        desc:"直線的なラインで鎖骨まわりをすっきり見せる、ブロー1回で再現できる王道ボブ。",
        points:["Iラインを強調する重めの直線カット","毛先はワンレングス寄りで上質感を演出"],
-       compat:"堅実で計画的なあなたに。毎朝同じようにキマる再現性の高さが安心材料になります。"},
+       compat:"堅実で計画的なあなたに。毎朝同じようにキマる再現性の高さが安心材料になります。",
+       kw:"小顔ボブ ストレート 前髪あり",
+       homeCare:"乾かすときは根元を立たせるようにブローするとペタンコ防止に。仕上げにストレートアイロンで毛先を軽く内巻きに。"},
       {key:"konare", label:"こなれ", title:"艶ストレートロング", length:"ロング",
        desc:"手をかけなくても様になる、伸ばしっぱなしでもサマになる万能ロング。",
        points:["巻いても真っ直ぐでも様になる長さ","毛先だけ軽くレイヤーで抜け感をプラス"],
-       compat:"効率重視で自由なあなたに。セットに時間をかけなくても様になる懐の深さが◎。"},
+       compat:"効率重視で自由なあなたに。セットに時間をかけなくても様になる懐の深さが◎。",
+       kw:"ストレートロング 韓国風 艶髪",
+       homeCare:"洗い流さないトリートメントで毛先の乾燥を防止。週1回のヘアオイルパックで艶をキープしましょう。"},
       {key:"hanayaka", label:"華やか", title:"外ハネストレートミディアム", length:"ミディアム",
        desc:"毛先を外に跳ねさせ、表情を華やかに見せる遊び心のあるスタイル。",
        points:["毛先だけワンカールで動きをプラス","前髪はサイドに流して抜け感を演出"],
-       compat:"社交的で感情表現が豊かなあなたに。動きのある毛先が第一印象を明るくします。"}
+       compat:"社交的で感情表現が豊かなあなたに。動きのある毛先が第一印象を明るくします。",
+       kw:"外ハネミディアム 前髪サイドスウェプト",
+       homeCare:"毛先だけコテやストレートアイロンで外向きに。丸めブラシで根元から巻くとキープ力がアップします。"}
     ],
     W:[
       {key:"teiban", label:"定番", title:"ゆるふわミディアムウェーブ", length:"ミディアム",
        desc:"曲線的な柔らかさを活かした、誰からも好印象な鉄板の愛されスタイル。",
        points:["緩めのCカールで柔らかさをプラス","トップは潰さず丸みをキープ"],
-       compat:"堅実で人当たりの良いあなたに。誰からも好印象な鉄板の可愛さが強みです。"},
+       compat:"堅実で人当たりの良いあなたに。誰からも好印象な鉄板の可愛さが強みです。",
+       kw:"ゆるふわパーマ ミディアム 愛され",
+       homeCare:"洗い流さないトリートメントを中間〜毛先につけてから、ハンドドライで自然乾燥するのがおすすめ。"},
       {key:"konare", label:"こなれ", title:"無造作ビーチウェーブロング", length:"ロング",
        desc:"ラフな質感で抜け感を出す、頑張りすぎない無造作ロング。",
        points:["ミックス巻きでランダムな束感を演出","乾かすだけでもサマになる質感カット"],
-       compat:"自由で直感的なあなたに。気分次第でアレンジを変えられる自由度の高さが魅力。"},
+       compat:"自由で直感的なあなたに。気分次第でアレンジを変えられる自由度の高さが魅力。",
+       kw:"ビーチウェーブ ロング 無造作",
+       homeCare:"ソルトスプレーを濡れた髪につけて自然乾燥、または手で揉み込むとビーチウェーブが再現しやすいです。"},
       {key:"hanayaka", label:"華やか", title:"ハイライト映えロングウェーブ", length:"セミロング〜ロング",
        desc:"立体感のあるウェーブで華やかな存在感を演出するスタイル。",
        points:["顔まわりに動きを出す面長レイヤー","毛先のカールでボリューム感をプラス"],
-       compat:"社交的で華やかな場が好きなあなたに。SNS映えする華やかさが武器になります。"}
+       compat:"社交的で華やかな場が好きなあなたに。SNS映えする華やかさが武器になります。",
+       kw:"ハイライト ロングウェーブ 巻き髪",
+       homeCare:"コテで大きめのカールを作り、指で軽くほぐすとボリューム感のあるウェーブに仕上がります。"}
     ],
     N:[
       {key:"teiban", label:"定番", title:"レイヤーウルフミディアム", length:"ミディアム",
        desc:"骨格のフレーム感を活かした、手をかけすぎなくても様になるウルフカット。",
        points:["トップにレイヤーを効かせて動きを出す","毛先は軽さを残してラフな質感に"],
-       compat:"堅実でマイペースなあなたに。手をかけすぎなくても様になる気楽さが◎。"},
+       compat:"堅実でマイペースなあなたに。手をかけすぎなくても様になる気楽さが◎。",
+       kw:"ウルフカット ミディアム レイヤー",
+       homeCare:"ワックスやバームを毛先中心に揉み込み、束感を出すのがポイントです。"},
       {key:"konare", label:"こなれ", title:"無造作マッシュショート", length:"ショート",
        desc:"ドライヤーひと吹きで様になる、究極の時短ショート。",
        points:["毛束感の出るシャギーカット","乾かすだけでキマる計算されたライン"],
-       compat:"効率重視でせっかちなあなたに。セット時間の短さが何よりのメリットです。"},
+       compat:"効率重視でせっかちなあなたに。セット時間の短さが何よりのメリットです。",
+       kw:"マッシュショート 韓国 メンズライク",
+       homeCare:"乾かすだけでOKなカット。仕上げにワックスを軽くつければ完成です。"},
       {key:"hanayaka", label:"華やか", title:"個性派シャギーロング", length:"ミディアム〜ロング",
        desc:"質感とボリュームで魅せる、存在感のあるロングスタイル。",
        points:["レイヤーをたっぷり入れて軽さと動きを演出","顔まわりの束感でこなれ感をプラス"],
-       compat:"自由で人と違うことを楽しめるあなたに。個性を発揮できる攻めたラインが魅力。"}
+       compat:"自由で人と違うことを楽しめるあなたに。個性を発揮できる攻めたラインが魅力。",
+       kw:"シャギーロング マレット 個性派",
+       homeCare:"毛先を中心にワックスで束感を作り、ドライヤーの温風と冷風を交互に当てるとクセが決まりやすいです。"}
     ]
   };
 
@@ -873,57 +921,81 @@
       {key:"teiban", label:"定番", name:"シアーオレンジベージュ", hex:"#E8B48A", tone:"8〜10トーン",
        desc:"黄みのある明るい暖色の定番カラー。肌に透明感と血色をプラスします。", avoid:"黒髪や暗すぎるアッシュ系は、顔色がくすんで見えることも。",
        skinCompat:"肌の黄み・血色の良さにストレートに寄り添う、失敗知らずの相性です。",
-       compat:"堅実で安定感を求めるあなたに。定番だからこそ長く愛せる安心感があります。"},
+       compat:"堅実で安定感を求めるあなたに。定番だからこそ長く愛せる安心感があります。",
+       kw:"オレンジベージュ 髪色 イエベ春",
+       homeCare:"カラーの色持ちを良くするには、色落ちを防ぐカラーシャンプーを週2〜3回使うのがおすすめ。"},
       {key:"konare", label:"こなれ", name:"ハニーブラウンバレイヤージュ", hex:"#D99B5F", tone:"9〜11トーン",
        desc:"毛先にかけて明るさを効かせたバレイヤージュ。トレンド感のある抜け感を演出します。", avoid:"単色でベタっと塗ると重く見えるので、グラデーション技術が前提です。",
        skinCompat:"地毛に近いベースを活かしつつ毛先だけ明るく。肌の透明感を邪魔しません。",
-       compat:"効率重視で身軽なあなたに。伸びても気にならない扱いやすさが魅力です。"},
+       compat:"効率重視で身軽なあなたに。伸びても気にならない扱いやすさが魅力です。",
+       kw:"ハニーブラウン バレイヤージュ",
+       homeCare:"バレイヤージュは根元の伸びが目立ちにくいので、3ヶ月に1回のメンテナンスでOKです。"},
       {key:"hanayaka", label:"華やか", name:"ヴィヴィッドコーラルオレンジ", hex:"#F0764A", tone:"10〜12トーン",
        desc:"彩度高めのコーラルオレンジ。血色感と華やかさを一気に引き上げます。", avoid:"色落ちで赤みが強くなりやすいので、カラーシャンプーでのケアがおすすめ。",
        skinCompat:"コントラストのはっきりした肌だからこそ負けずに映える、彩度高めの一色です。",
-       compat:"社交的で華やかな場が好きなあなたに。周りの視線を惹きつける鮮やかさが武器になります。"}
+       compat:"社交的で華やかな場が好きなあなたに。周りの視線を惹きつける鮮やかさが武器になります。",
+       kw:"コーラルオレンジ 髪色 派手髪",
+       homeCare:"ヴィヴィッドカラーは色落ちが早いので、洗い流さないトリートメントで髪を保護しながら色持ちアップを。"}
     ],
     summer:[
       {key:"teiban", label:"定番", name:"ラベンダーミルクティーグレージュ", hex:"#C9B7C9", tone:"7〜9トーン",
        desc:"青みのある柔らかい定番カラー。肌のくすみを飛ばし抜け感を演出します。", avoid:"オレンジやゴールド系の暖色は、顔が黄ぐすみして見えやすいので注意。",
        skinCompat:"青みがかった肌のくすみを飛ばし、透明感を底上げする鉄板の相性です。",
-       compat:"堅実で安定感を求めるあなたに。定番だからこそ長く愛せる安心感があります。"},
+       compat:"堅実で安定感を求めるあなたに。定番だからこそ長く愛せる安心感があります。",
+       kw:"ラベンダーグレージュ 髪色 ブルベ夏",
+       homeCare:"紫シャンプーを使うと、黄ばみを抑えてグレージュの透明感を長持ちさせられます。"},
       {key:"konare", label:"こなれ", name:"スモーキーラベンダーグラデーション", hex:"#B39FC0", tone:"8〜10トーン",
        desc:"根元から毛先にかけてスモーキーに抜けるグラデーション。透明感と今っぽさを両立します。", avoid:"根元との差が大きすぎると伸びかけが目立ちやすいので定期メンテ推奨。",
        skinCompat:"肌のやわらかい色素になじみながら、毛先だけ軽やかな抜け感を演出します。",
-       compat:"効率重視で身軽なあなたに。伸びても気にならない扱いやすさが魅力です。"},
+       compat:"効率重視で身軽なあなたに。伸びても気にならない扱いやすさが魅力です。",
+       kw:"スモーキーラベンダー グラデーションカラー",
+       homeCare:"グラデーションは伸びても気にならないので、月1回のトリートメントでツヤをキープしましょう。"},
       {key:"hanayaka", label:"華やか", name:"ローズモーヴピンク", hex:"#C77A94", tone:"9〜11トーン",
        desc:"モーヴがかったローズピンク。華やかで女性らしい血色感を演出します。", avoid:"色が抜けやすいので、色持ちケアシャンプーとセットで検討を。",
        skinCompat:"青み肌との親和性が高い色相だからこそ出せる、華やかな血色感です。",
-       compat:"社交的で華やかな場が好きなあなたに。周りの視線を惹きつける鮮やかさが武器になります。"}
+       compat:"社交的で華やかな場が好きなあなたに。周りの視線を惹きつける鮮やかさが武器になります。",
+       kw:"ローズピンク 髪色 モーヴ",
+       homeCare:"ピンク系は色落ちが早いので、カラーシャンプーと洗い流さないトリートメントのW使いがおすすめ。"}
     ],
     autumn:[
       {key:"teiban", label:"定番", name:"キャラメルショコラブラウン", hex:"#8A5A34", tone:"5〜7トーン",
        desc:"深みのある黄みブラウンの定番カラー。肌になじみながら大人っぽい艶を演出します。", avoid:"青みの強い寒色や真っ黒は、肌がくすんで見えやすいことも。",
        skinCompat:"黄みの強い肌になじみながら、しっかり艶を感じさせる王道の相性です。",
-       compat:"堅実で安定感を求めるあなたに。定番だからこそ長く愛せる安心感があります。"},
+       compat:"堅実で安定感を求めるあなたに。定番だからこそ長く愛せる安心感があります。",
+       kw:"キャラメルブラウン 髪色 イエベ秋",
+       homeCare:"暖色系ブラウンは色持ちが良いので、月1回程度のカラーで十分キープできます。"},
       {key:"konare", label:"こなれ", name:"テラコッタブラウンバレイヤージュ", hex:"#A8623F", tone:"7〜9トーン",
        desc:"テラコッタ系の温かみと立体的なバレイヤージュで、トレンド感と抜け感を両立します。", avoid:"ブリーチ量が多くなりがちなので、ダメージケアとセットで検討を。",
        skinCompat:"肌の深み・落ち着きに寄り添いつつ、毛先だけ立体的な明るさを効かせます。",
-       compat:"効率重視で身軽なあなたに。伸びても気にならない扱いやすさが魅力です。"},
+       compat:"効率重視で身軽なあなたに。伸びても気にならない扱いやすさが魅力です。",
+       kw:"テラコッタブラウン バレイヤージュ",
+       homeCare:"バレイヤージュは伸びても違和感が少ないので、3ヶ月に1回のメンテナンスでOKです。"},
       {key:"hanayaka", label:"華やか", name:"カッパーオレンジブラウン", hex:"#B5622E", tone:"9〜11トーン",
        desc:"発色の良いカッパートーン。艶と華やかさを両立する存在感のある一色です。", avoid:"退色すると黄みが強く出やすいので、ケアと定期メンテを。",
        skinCompat:"深みのある肌だからこそ発色良く見える、彩度の高いカッパートーンです。",
-       compat:"社交的で華やかな場が好きなあなたに。周りの視線を惹きつける鮮やかさが武器になります。"}
+       compat:"社交的で華やかな場が好きなあなたに。周りの視線を惹きつける鮮やかさが武器になります。",
+       kw:"カッパーオレンジ 髪色 個性的",
+       homeCare:"ブリーチを伴うカラーはダメージケアが必須。週1回の集中トリートメントを取り入れましょう。"}
     ],
     winter:[
       {key:"teiban", label:"定番", name:"ダークグレージュ〜ブルーブラック", hex:"#3A3238", tone:"3〜5トーン",
        desc:"コントラストの効いた寒色系の定番カラー。色白効果とシャープな印象を演出します。", avoid:"オレンジ系や黄みの強いブラウンは、顔がぼやけた印象になりがち。",
        skinCompat:"コントラストの強い肌立ちを活かす、色白効果抜群の鉄板カラーです。",
-       compat:"堅実で安定感を求めるあなたに。定番だからこそ長く愛せる安心感があります。"},
+       compat:"堅実で安定感を求めるあなたに。定番だからこそ長く愛せる安心感があります。",
+       kw:"ブルーブラック 髪色 ブルベ冬",
+       homeCare:"暗髪は色持ちが良い分、艶を出すためのヘアオイルで質感アップを狙いましょう。"},
       {key:"konare", label:"こなれ", name:"インクブラックグラデーション", hex:"#2B2A3D", tone:"4〜6トーン",
        desc:"根元は締め色、毛先にかけてわずかに青みを効かせたグラデーション。透明感のある奥行きを演出します。", avoid:"黒に寄せすぎるとのっぺり見えるので、毛先の質感出しが鍵です。",
        skinCompat:"肌のクリアな色素に負けない締め色をベースに、毛先だけ抜け感をプラスします。",
-       compat:"効率重視で身軽なあなたに。伸びても気にならない扱いやすさが魅力です。"},
+       compat:"効率重視で身軽なあなたに。伸びても気にならない扱いやすさが魅力です。",
+       kw:"インクブラック グラデーションカラー",
+       homeCare:"グラデーションは根元の伸びが気にならないので、メンテナンス頻度を抑えられます。"},
       {key:"hanayaka", label:"華やか", name:"プラムパープルブラック", hex:"#3D2A3E", tone:"5〜7トーン",
        desc:"パープルを効かせたジュエルトーン。透明感と華やかさを両立する寒色です。", avoid:"色が抜けると赤紫に転びやすいので、紫シャンプーでのケアがおすすめ。",
        skinCompat:"青みの強い肌だからこそ発色する、ジュエルトーンの華やかな寒色です。",
-       compat:"社交的で華やかな場が好きなあなたに。周りの視線を惹きつける鮮やかさが武器になります。"}
+       compat:"社交的で華やかな場が好きなあなたに。周りの視線を惹きつける鮮やかさが武器になります。",
+       kw:"プラムパープル 髪色 暗髪カラー",
+       homeCare:"紫シャンプーでパープルの色味を長持ちさせつつ、艶感をキープしましょう。"}
     ]
   };
 
@@ -1183,7 +1255,9 @@
     byStage.mbti.forEach(function(r){ if(!r.chosen) return; axisVals[r.q.axis].push({val:r.chosen.val, weight:r.chosen.w || 1}); });
 
     var res = computeFromAnswerMap(skeletonPairs, baseVals, brightVals, axisVals);
-    renderResult(res.skeletonType, res.mbtiCode, res.colorType, res.percents, {mixType:res.skeletonMix, confidence:res.skeletonConfidence});
+    var code = res.skeletonType + "." + res.mbtiCode + "." + res.colorType;
+    var historyInfo = recordDiagHistory(code);
+    renderResult(res.skeletonType, res.mbtiCode, res.colorType, res.percents, {mixType:res.skeletonMix, confidence:res.skeletonConfidence}, historyInfo);
     setHash(res.skeletonType, res.mbtiCode, res.colorType);
     showScreen(screenResult);
   }
@@ -1202,9 +1276,41 @@
     if(!m) return false;
     var sk = m[1], mb = m[2], co = m[3];
     if(!SKELETON_INFO[sk] || !MBTI_INFO[mb] || !COLOR_INFO[co]) return false;
-    renderResult(sk, mb, co, null, null);
+    renderResult(sk, mb, co, null, null, null);
     showScreen(screenResult);
     return true;
+  }
+
+  /* ================= DIAGNOSIS HISTORY (localStorage) ================= */
+
+  function loadDiagHistory(){
+    try{ return JSON.parse(localStorage.getItem("hairDiagnosisHistory") || "[]"); }catch(e){ return []; }
+  }
+  function saveDiagHistory(list){
+    try{ localStorage.setItem("hairDiagnosisHistory", JSON.stringify(list)); }catch(e){}
+  }
+  function recordDiagHistory(code){
+    var list = loadDiagHistory();
+    var previous = list.length ? list[0] : null;
+    list.unshift({code:code, ts:Date.now()});
+    if(list.length > 20) list = list.slice(0, 20);
+    saveDiagHistory(list);
+    return {previous:previous, count:list.length};
+  }
+  function buildCompareText(prevCode, curCode){
+    var prev = prevCode.split("."), cur = curCode.split(".");
+    var parts = [];
+    if(prev[0] !== cur[0]){
+      parts.push("骨格タイプが" + SKELETON_INFO[prev[0]].name.replace("骨格","") + "→" + SKELETON_INFO[cur[0]].name.replace("骨格","") + "に変化");
+    }
+    if(prev[1] !== cur[1]){
+      parts.push("性格タイプが" + prev[1] + "→" + cur[1] + "に変化");
+    }
+    if(prev[2] !== cur[2]){
+      parts.push("パーソナルカラーが" + COLOR_INFO[prev[2]].name.replace(/（.*）/,"") + "→" + COLOR_INFO[cur[2]].name.replace(/（.*）/,"") + "に変化");
+    }
+    if(parts.length === 0) return "前回と全く同じ結果でした。ブレない魅力ですね！";
+    return "前回から" + parts.join("、") + "しました。その日の気分や体調で変わることもあります。";
   }
 
   /* ================= ICONS ================= */
@@ -1404,7 +1510,7 @@
 
   function el(id){ return document.getElementById(id); }
 
-  function renderResult(skeletonType, mbtiCode, colorType, percents, skeletonMeta){
+  function renderResult(skeletonType, mbtiCode, colorType, percents, skeletonMeta, historyInfo){
     var sk = SKELETON_INFO[skeletonType];
     var bestKey = pickBestVariant(mbtiCode);
     var styleOptions = SKELETON_STYLE[skeletonType];
@@ -1428,6 +1534,22 @@
     [sk.name, mbtiCode + "・" + mb.nick, co.name].forEach(function(t){
       var c = document.createElement("span"); c.className = "type-chip"; c.textContent = t; chipRow.appendChild(c);
     });
+
+    var historyBanner = el("history-banner");
+    if(historyInfo){
+      historyBanner.style.display = "";
+      el("history-count").textContent = historyInfo.count + "回目の診断";
+      var curCode = skeletonType + "." + mbtiCode + "." + colorType;
+      if(!historyInfo.previous){
+        el("history-text").textContent = "はじめての診断でした。気分やライフスタイルが変わったら、また試してみてね。";
+      } else if(historyInfo.previous.code === curCode){
+        el("history-text").textContent = "前回と全く同じ結果でした。ブレない魅力ですね！";
+      } else {
+        el("history-text").textContent = buildCompareText(historyInfo.previous.code, curCode);
+      }
+    } else {
+      historyBanner.style.display = "none";
+    }
 
     // share links
     var shareText = "私は「" + skShort + "×" + mbtiCode + "×" + coShort + "」タイプでした。あなたのタイプは？";
@@ -1504,6 +1626,32 @@
     el("color-avoid").textContent = "注意：" + coStyle.avoid;
     svgSet(el("color-icon"), seasonIconSvg(colorType, "var(--accent-deep)"));
 
+    function searchRowHtml(kw){
+      var tag = kw.split(" ")[0];
+      var igUrl = "https://www.instagram.com/explore/tags/" + encodeURIComponent(tag) + "/";
+      return '<div class="search-row">' +
+        '<span class="search-kw-text">' + kw + '</span>' +
+        '<a class="kw-btn insta-btn" href="' + igUrl + '" target="_blank" rel="noopener" title="Instagramで探す" aria-label="Instagramで探す">' +
+          '<svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="#fff" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="#fff" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1.1" fill="#fff"/></svg>' +
+        '</a>' +
+        '<button type="button" class="kw-btn copy-kw-btn" data-kw="' + kw.replace(/"/g,"&quot;") + '" title="キーワードをコピー" aria-label="キーワードをコピー">' +
+          '<svg viewBox="0 0 24 24" fill="none"><rect x="9" y="9" width="11" height="11" rx="2" stroke="#fff" stroke-width="1.5"/><path d="M5 15V5a2 2 0 0 1 2-2h10" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/></svg>' +
+        '</button>' +
+      '</div>';
+    }
+    function wireCopyButtons(root){
+      root.querySelectorAll(".copy-kw-btn").forEach(function(btn){
+        btn.addEventListener("click", function(){
+          var kw = btn.getAttribute("data-kw");
+          var original = btn.innerHTML;
+          function flash(){ btn.classList.add("copied"); setTimeout(function(){ btn.classList.remove("copied"); }, 1500); }
+          if(navigator.clipboard && navigator.clipboard.writeText){
+            navigator.clipboard.writeText(kw).then(flash).catch(function(){});
+          }
+        });
+      });
+    }
+
     var styleWrap = el("style-options"); styleWrap.innerHTML = "";
     styleOptions.forEach(function(opt){
       var isBest = opt.key === bestKey;
@@ -1524,10 +1672,13 @@
             '<p style="color:var(--ink-soft); font-size:.9rem;">' + opt.desc + '</p>' +
             '<ul class="style-points">' + ptHtml + '</ul>' +
             '<div class="compat-box"><b>性格との相性</b>' + opt.compat + '</div>' +
+            '<div class="compat-box"><b>おうちケア</b>' + opt.homeCare + '</div>' +
+            searchRowHtml(opt.kw) +
           '</div>' +
         '</div>';
       styleWrap.appendChild(card);
     });
+    wireCopyButtons(styleWrap);
 
     var colorWrap = el("color-options"); colorWrap.innerHTML = "";
     colorOptions.forEach(function(opt){
@@ -1546,10 +1697,13 @@
             '<div class="avoid" style="margin-top:8px;">注意：' + opt.avoid + '</div>' +
             '<div class="compat-box"><b>肌との相性</b>' + opt.skinCompat + '</div>' +
             '<div class="compat-box"><b>性格との相性</b>' + opt.compat + '</div>' +
+            '<div class="compat-box"><b>おうちケア</b>' + opt.homeCare + '</div>' +
+            searchRowHtml(opt.kw) +
           '</div>' +
         '</div>';
       colorWrap.appendChild(card);
     });
+    wireCopyButtons(colorWrap);
 
     var honne = el("honne-card"); honne.innerHTML = "";
     var letters = [mbtiCode[0], mbtiCode[1], mbtiCode[2], mbtiCode[3]];
