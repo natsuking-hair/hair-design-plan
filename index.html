@@ -1,5 +1,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>似合う髪型診断 | 女性のための骨格×性格×パーソナルカラー</title>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-HMKT3ZKF48"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', 'G-HMKT3ZKF48');
+</script>
 <style>
   @font-face {
     font-family: 'Fredoka Diag';
@@ -688,6 +695,10 @@
 (function(){
   "use strict";
 
+  function trackEvent(name, params){
+    try{ if(typeof gtag === "function"){ gtag("event", name, params || {}); } }catch(e){}
+  }
+
   /* ================= DATA ================= */
 
   var SKELETON_Q = [
@@ -1285,6 +1296,7 @@
   document.getElementById("start-btn").addEventListener("click", function(){
     current = 0; initAnswers();
     showScreen(screenQuiz); renderQuestion();
+    trackEvent("diagnosis_start");
   });
   backBtn.addEventListener("click", function(){ if(current > 0){ current--; renderQuestion(); } });
   document.getElementById("top-btn").addEventListener("click", function(){ current = 0; initAnswers(); clearHash(); showScreen(screenTop); });
@@ -1366,6 +1378,11 @@
     renderResult(res.skeletonType, res.faceType, res.mbtiCode, res.colorType, res.percents, {mixType:res.skeletonMix, confidence:res.skeletonConfidence}, historyInfo);
     setHash(res.skeletonType, res.faceType, res.mbtiCode, res.colorType);
     showScreen(screenResult);
+    trackEvent("diagnosis_complete", {
+      skeleton_type: res.skeletonType, face_type: res.faceType,
+      mbti_code: res.mbtiCode, color_type: res.colorType,
+      diagnosis_count: historyInfo.count
+    });
   }
 
   /* ================= URL PERMALINK ================= */
@@ -1384,6 +1401,7 @@
       if(!SKELETON_INFO[sk] || !FACE_SHAPE_INFO[fc] || !MBTI_INFO[mb] || !COLOR_INFO[co]) return false;
       renderResult(sk, fc, mb, co, null, null, null);
       showScreen(screenResult);
+      trackEvent("view_shared_result", {skeleton_type:sk, face_type:fc, mbti_code:mb, color_type:co});
       return true;
     }
     var m3 = h.match(/#r=([SWN])\.([EI][SN][TF][JP])\.(spring|summer|autumn|winter)/);
@@ -1392,6 +1410,7 @@
       if(!SKELETON_INFO[sk3] || !MBTI_INFO[mb3] || !COLOR_INFO[co3]) return false;
       renderResult(sk3, "O", mb3, co3, null, null, null);
       showScreen(screenResult);
+      trackEvent("view_shared_result", {skeleton_type:sk3, face_type:"O", mbti_code:mb3, color_type:co3, legacy_link:true});
       return true;
     }
     return false;
